@@ -1,4 +1,4 @@
-const db = require('./db/connection')
+const db = require('./connection.js')
 const inquirer = require ('inquirer')
 
 const initialQuestions = [
