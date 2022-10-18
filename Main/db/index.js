@@ -1,6 +1,7 @@
 const db = require('./connection.js')
 const inquirer = require ('inquirer')
 
+
 const initialQuestions = [
     {
         name: "whatDo",
@@ -18,6 +19,24 @@ const initialQuestions = [
         ]
     }
 ];
+let viewEmployees = () => {
+    db.query("SELECT * FROM employee;", (err, data) => {
+        console.table(data);
+        askAQ();
+    })
+};
+let viewRoles = () => {
+    db.query("SELECT * FROM roles;", (err, data) => {
+        console.table(data);
+        askAQ();
+    })
+};
+let viewDepartments = () => {
+    db.query("SELECT * FROM department;", (err, data) => {
+        console.table(data);
+        askAQ();
+    })
+};
 
 const addEmployee = () => {
     db.query('UPDATE employee SET ',(err, results) =>{
@@ -27,7 +46,7 @@ const addEmployee = () => {
     })
 }
 const addRole = () => {
-    db.query('UPDATE employee SET ',(err, results) =>{
+    db.query('UPDATE roles SET ',(err, results) =>{
         if (err) throw err;
 
         console.table(results)
@@ -40,6 +59,7 @@ const askAQ = async () =>{
         (initialQuestions);
     switch(whatDo){
         case 'View All Employees':
+            viewEmployees()
             break;
         case 'Add Employee':
             addEmployee()
@@ -47,10 +67,13 @@ const askAQ = async () =>{
         case 'Update Employee Role':
             break;
         case 'View All Roles':
+            viewRoles()
             break;
         case 'Add Role':
+            addRole()
             break;
         case 'View All Departments':
+            viewDepartments()
             break;
         case 'Add Departments':
             break;
