@@ -7,15 +7,26 @@ const initialQuestions = [
         message: "What would you like to do next?",
         type: "list",
         choices: [
-            "View all products",
-            "Buy a product",
-            "Add a new product",
+            "View All Employees",
+            "Add Employee",
+            "Update Employee Role",
+            "View All Roles",
+            "Add Role",
+            "View All Departments",
+            "add Department",
             "Exit"
         ]
     }
 ];
 
-const addNew = () => {
+const addEmployee = () => {
+    db.query('UPDATE employee SET ',(err, results) =>{
+        if (err) throw err;
+
+        console.table(results)
+    })
+}
+const addRole = () => {
     db.query('UPDATE employee SET ',(err, results) =>{
         if (err) throw err;
 
@@ -31,7 +42,7 @@ const askAQ = async () =>{
         case 'View All Employees':
             break;
         case 'Add Employee':
-            addNew()
+            addEmployee()
             break;
         case 'Update Employee Role':
             break;
