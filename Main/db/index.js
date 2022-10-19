@@ -38,20 +38,21 @@ let viewDepartments = () => {
     })
 };
 
-const addEmployee = () => {
-    db.query('UPDATE employee SET ',(err, results) =>{
-        if (err) throw err;
+// const addEmployee = () => {
+//     db.query('UPDATE employee SET ',(err, results) =>{
+//         if (err) throw err;
 
-        console.table(results)
-    })
-}
-const addRole = () => {
-    db.query('UPDATE roles SET ',(err, results) =>{
-        if (err) throw err;
+//         console.table(results)
+//     })
+// }
 
-        console.table(results)
-    })
-}
+// const addRole = () => {
+//     db.query('UPDATE roles SET ',(err, results) =>{
+//         if (err) throw err;
+
+//         console.table(results)
+//     })
+// }
 
 
 const askAQ = async () =>{
