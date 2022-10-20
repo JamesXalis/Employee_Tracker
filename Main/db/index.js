@@ -19,6 +19,30 @@ const initialQuestions = [
         ]
     }
 ];
+const employeeAddition =[
+    {
+        name: "firstName",
+        message:"What is their first name?"
+},
+    {
+        name: "lastName",
+        message:"What is their last name?"
+},
+    {
+        name: "role",
+        type: "list",
+        message:"What is their role?",
+        choices:[]
+},
+    {
+        type: "list",
+        name: "whichManager",
+        message: "Who is the manager of the current employee",
+        choices: []
+},
+]
+
+
 let viewEmployees = () => {
     db.query("SELECT * FROM employee;", (err, data) => {
         console.table(data);
@@ -38,14 +62,17 @@ let viewDepartments = () => {
     })
 };
 
-// const addEmployee = () => {
-//     db.query('UPDATE employee SET ',(err, results) =>{
-//         if (err) throw err;
-
-//         console.table(results)
-//     })
-// }
-
+function addEmployee(firstName, lastName, roleID, managerID){
+    employeeAddition()
+    const params = [firstName, lastName, roleID, managerID];
+    const sql = `INSERT INTO employee
+        (first_name, last_name, role_id, manager_id) 
+        VALUES (?, ?, ?, ?)`
+    return db.query(sql, params, (err, res) => {
+        if (err) throw err;
+        console.log("Add Employee Success");
+    });
+}
 // const addRole = () => {
 //     db.query('UPDATE roles SET ',(err, results) =>{
 //         if (err) throw err;
