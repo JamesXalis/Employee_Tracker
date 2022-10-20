@@ -57,8 +57,26 @@ const roleAddition =[
         message:"What is the salary for this role?",
 },
 ]
-
-
+const whatDepartment = [
+    {
+        name: "departmentName",
+        message: "What is the name of the department you want to add?"
+    }
+]
+let updateEmployeeQuestion = [
+    {
+        type: "list",
+        name: "employeeName",
+        message: "What is the name of the employee who's role you'd like to update?",
+        choices: []
+    },
+    {
+        type: "list",
+        name: "newManager",
+        message: "What is the new role of this employee?",
+        choices: []
+    }
+]
 let viewEmployees = () => {
     db.query("SELECT * FROM employee;", (err, data) => {
         console.table(data);
@@ -116,6 +134,42 @@ let addRole = () => {
     })
 };
 
+let addDepartment = () => {
+    inquirer.prompt(whatDepartment)
+    .then((response) => {
+        db.query(`INSERT INTO department (name) VALUES (?);`, [response.departmentName], (err, data) => {
+            console.log("\n-----------------------------------------\n")
+            console.log("New department has been successfully added!")
+            console.log("\n-----------------------------------------\n")
+            askAQ();
+        })
+    })
+};
+
+let updateEmployeeRole = () => {
+    db.query("SELECT * FROM employee;", (err, data) => {
+        // select employee to update
+        updateEmployeeQuestion[0].choices = data.map((element) => ({value: element.id, name: element.first_name+" "+element.last_name}));
+        db.query("SELECT * FROM roles;", (err, data) => {
+            // choices for new role
+            updateEmployeeQuestion[1].choices = data.map((element) => ({value: element.id, name: element.title}))
+            inquirer.prompt(updateEmployeeQuestion)
+            .then((response) => {
+                // then update role
+                db.query(`UPDATE employee SET role_id = ? WHERE id = ?;`, 
+                [response.newRole, response.employeeName], 
+                (err, data) => {
+                    if (err) throw err;
+                    console.log("\n-----------------------------------------\n")
+                    console.log("Employee's role has been successfully updated!")
+                    console.log("\n-----------------------------------------\n")
+                    askAQ();
+                })
+            })
+        })
+    })
+};
+
 const askAQ = async () =>{
     const { whatDo } = await inquirer.prompt 
         (initialQuestions);
@@ -126,7 +180,8 @@ const askAQ = async () =>{
         case 'Add Employee':
             addEmployee()
             break;
-        case 'Update Employee Role':
+        case 'Update An Employee Role':
+            updateEmployeeRole()
             break;
         case 'View All Roles':
             viewRoles()
@@ -137,7 +192,8 @@ const askAQ = async () =>{
         case 'View All Departments':
             viewDepartments()
             break;
-        case 'Add Departments':
+        case 'Add A Department':
+            addDepartment()
             break;
         case 'Exit':
             console.log("Goodbye!")
