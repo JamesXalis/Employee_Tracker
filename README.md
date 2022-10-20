@@ -14,7 +14,7 @@ As this application runs on node, many of the foundational technologies in this 
 This application will eventually host a much more expansive suite of database management features, including adding contact information for employees, time employed, etc.
 
 ## Demo
-https://youtu.be/rTTzdUXJaVQ
+[![Clickable Youtube thumbnail](https://img.youtube.com/vi/rTTzdUXJaVQ)](https://youtu.be/rTTzdUXJaVQ)https://youtu.be/rTTzdUXJaVQ
 
 
 ## Screenshot
