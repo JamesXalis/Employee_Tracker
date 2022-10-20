@@ -9,12 +9,12 @@ const initialQuestions = [
         type: "list",
         choices: [
             "View All Employees",
-            "Add Employee",
-            "Update Employee Role",
+            "Add An Employee",
+            "Update An Employee Role",
             "View All Roles",
-            "Add Role",
+            "Add A Role",
             "View All Departments",
-            "add Department",
+            "Add A Department",
             "Exit"
         ]
     }
@@ -38,7 +38,23 @@ const employeeAddition =[
         type: "list",
         name: "whichManager",
         message: "Who is the manager of the current employee",
-        choices: []
+        choices:[]
+},
+]
+const roleAddition =[
+    {
+        name: "roleTitle",
+        message:"What is the title of the role?"
+},
+    {
+        type: "list",
+        name: "department_id",
+        message:"What department is the role in?",
+        choices:[]
+},
+    {
+        name: "salary",
+        message:"What is the salary for this role?",
 },
 ]
 
@@ -62,25 +78,43 @@ let viewDepartments = () => {
     })
 };
 
-function addEmployee(firstName, lastName, roleID, managerID){
-    employeeAddition()
-    const params = [firstName, lastName, roleID, managerID];
-    const sql = `INSERT INTO employee
-        (first_name, last_name, role_id, manager_id) 
-        VALUES (?, ?, ?, ?)`
-    return db.query(sql, params, (err, res) => {
-        if (err) throw err;
-        console.log("Add Employee Success");
-    });
-}
-// const addRole = () => {
-//     db.query('UPDATE roles SET ',(err, results) =>{
-//         if (err) throw err;
-
-//         console.table(results)
-//     })
-// }
-
+let addEmployee = () => {
+    db.query("SELECT * FROM roles;", (err, data) => {
+        employeeAddition[2].choices = data.map((element) => ({value: element.id, name: element.title}))
+        db.query("SELECT * FROM employee;", (err, data) => {
+            employeeAddition[3].choices = data.map((element) => ({value: element.id, name: element.first_name+" "+element.last_name}));
+            employeeAddition[3].choices.push({value: null, name: "None"});
+            inquirer.prompt(employeeAddition)
+            .then((response) => {
+                db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?);`, 
+                [response.firstName, response.lastName, response.role, response.whichManager], 
+                (err, data) => {
+                    if (err) throw err;
+                    console.log("\n-----------------------------------------\n")
+                    console.log("New employee has been successfully added!")
+                    console.log("\n-----------------------------------------\n")
+                    askAQ();
+                })
+            })
+        })
+    })
+};
+let addRole = () => {
+    db.query("SELECT * FROM department;", (err, data) => {
+        roleAddition[1].choices = data.map((element) => ({value: element.id, name: element.title}));
+        inquirer.prompt(roleAddition)
+        .then((response) => {
+            db.query(`INSERT INTO roles (title, department_id, salary) VALUES (?,?,?);`, 
+            [response.roleTitle, response.department_id, response.salary], 
+            (err, data) => {
+                console.log("\n-----------------------------------------\n")
+                console.log("New role has been successfully added!")
+                console.log("\n-----------------------------------------\n")
+                askAQ();
+            })
+        })
+    })
+};
 
 const askAQ = async () =>{
     const { whatDo } = await inquirer.prompt 
