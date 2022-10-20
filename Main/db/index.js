@@ -9,12 +9,12 @@ const initialQuestions = [
         type: "list",
         choices: [
             "View All Employees",
-            "Add An Employee",
-            "Update An Employee Role",
             "View All Roles",
-            "Add A Role",
             "View All Departments",
+            "Add An Employee",
+            "Add A Role",
             "Add A Department",
+            "Update An Employee Role",
             "Exit"
         ]
     }
@@ -177,7 +177,7 @@ const askAQ = async () =>{
         case 'View All Employees':
             viewEmployees()
             break;
-        case 'Add Employee':
+        case 'Add An Employee':
             addEmployee()
             break;
         case 'Update An Employee Role':
@@ -186,7 +186,7 @@ const askAQ = async () =>{
         case 'View All Roles':
             viewRoles()
             break;
-        case 'Add Role':
+        case 'Add A Role':
             addRole()
             break;
         case 'View All Departments':
